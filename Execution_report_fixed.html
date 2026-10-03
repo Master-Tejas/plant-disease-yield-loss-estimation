@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Crop Yield Loss Analyzer - Professional Agricultural Assessment</title>
+<style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3c72;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-item {
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            color: #1e3c72;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .main-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .main-title h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .main-title p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .upload-zone {
+            border: 3px dashed #1e3c72;
+            border-radius: 15px;
+            padding: 50px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+        }
+        
+        .upload-zone:hover {
+            border-color: #2a5298;
+            background: linear-gradient(135deg, #e8f0ff 0%, #d0e0ff 100%);
+            transform: translateY(-2px);
+        }
+        
+        .upload-zone.dragover {
+            border-color: #4CAF50;
+            background: linear-gradient(135deg, #e8f5e8 0%, #d0f0d0 100%);
+        }
+        
+        .upload-icon {
+            font-size: 4rem;
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+        
+        .upload-text {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .upload-subtext {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 25px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 60, 114, 0.4);
+        }
+        
+        .btn-analyze {
+            width: 100%;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            display: none;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .preview-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .analysis-panel {
+            min-height: 400px;
+        }
+        
+        .loading-state {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1e3c72;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .results-container {
+            display: none;
+        }
+        
+        .disease-detection {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+            border-left: 5px solid #1e3c72;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .disease-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+        
+        .confidence-section {
+            margin-bottom: 15px;
+        }
+        
+        .confidence-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .confidence-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 10px;
+            transition: width 1.5s ease;
+            position: relative;
+        }
+        
+        .confidence-text {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .yield-impact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .yield-card {
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .yield-card.low {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+        
+        .yield-card.medium {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+        }
+        
+        .yield-card.high {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+        
+        .yield-percentage {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .yield-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .severity-indicator {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .severity-low {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+        }
+        
+        .severity-medium {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ef6c00;
+        }
+        
+        .severity-high {
+            background: rgba(244, 67, 54, 0.2);
+            color: #c62828;
+        }
+        
+        .recommendations-panel {
+            background: linear-gradient(135deg, #e8f5e8 0%, #d0f0d0 100%);
+            border-left: 5px solid #4CAF50;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .recommendations-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .recommendations-icon {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .recommendations-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .recommendations-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(46, 125, 50, 0.1);
+            color: #333;
+            line-height: 1.5;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .recommendations-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .recommendations-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .stats-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .progress-section {
+            margin-top: 30px;
+        }
+        
+        .progress-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+        
+        .progress-fill.accuracy {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+        }
+        
+        .progress-fill.detection {
+            background: linear-gradient(90deg, #2196F3, #64B5F6);
+        }
+        
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .yield-impact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .main-title h1 {
+                font-size: 2.2rem;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<header class="header">
+<div class="header-content">
+<div class="logo">
+<span class="logo-icon">🌾</span>
+<span>AgriAnalyzer Pro</span>
+</div>
+<nav class="nav-menu">
+<a class="nav-item active" href="#" onclick="showSection('disease')">Disease Detection</a>
+<a class="nav-item" href="#" onclick="showSection('yield')">Yield Analysis</a>
+<a class="nav-item" href="#" onclick="showSection('reports')">Reports</a>
+<a class="nav-item" href="#" onclick="showSection('settings')">Settings</a>
+</nav>
+</div>
+</header>
+<div class="container"><div class="section" id="disease" style="display:block;">
+<div class="main-title">
+<h1>Crop Yield Loss Analyzer</h1>
+<p>Advanced AI-powered agricultural assessment for disease detection and yield optimization</p>
+</div>
+<div class="dashboard-grid">
+<div class="card">
+<div class="card-header">
+<div class="card-icon">📸</div>
+<div class="card-title">Image Upload &amp; Analysis</div>
+</div>
+<div class="upload-zone" id="uploadZone">
+<div class="upload-icon">🌱</div>
+<div class="upload-text">Drop your crop image here</div>
+<div class="upload-subtext">Supports JPG, PNG, WebP up to 10MB</div>
+<button class="btn-primary" onclick="document.getElementById('fileInput').click()">
+                        Select Image
+                    </button>
+<input accept="image/*" class="file-input" id="fileInput" type="file"/>
+</div>
+<div class="preview-container" id="previewContainer"></div>
+<button class="btn-primary btn-analyze" id="analyzeBtn">
+                    🔍 Analyze Crop Health
+                </button>
+</div>
+<div class="card analysis-panel">
+<div class="card-header">
+<div class="card-icon">🔬</div>
+<div class="card-title">Analysis Results</div>
+</div>
+<div class="loading-state" id="loadingState">
+<div class="spinner"></div>
+<h3>Quick Analysis in Progress...</h3>
+<p>Fast AI processing - results in seconds!</p>
+</div>
+<div class="results-container" id="resultsContainer">
+<div class="disease-detection">
+<div class="disease-name" id="diseaseName">Healthy Crop</div>
+<div class="confidence-section">
+<div class="confidence-label">Detection Confidence</div>
+<div class="confidence-bar">
+<div class="confidence-fill" id="confidenceFill">
+<div class="confidence-text" id="confidenceText">95%</div>
+</div>
+</div>
+</div>
+<p id="diseaseDescription">No disease detected. Crop appears healthy.</p>
+<div class="severity-indicator" id="severityIndicator">Low Risk</div>
+</div>
+<div class="yield-impact-grid">
+<div class="yield-card low" id="yieldCard">
+<div class="yield-percentage" id="yieldPercentage">0%</div>
+<div class="yield-label">Expected Yield Loss</div>
+</div>
+<div class="yield-card low">
+<div class="yield-percentage" id="cropHealth">98%</div>
+<div class="yield-label">Overall Crop Health</div>
+</div>
+</div>
+<div class="recommendations-panel">
+<div class="recommendations-title">
+<span class="recommendations-icon">💡</span>
+                            Treatment Recommendations
+                        </div>
+<ul class="recommendations-list" id="recommendationsList">
+<li>Continue regular monitoring schedule</li>
+<li>Maintain optimal irrigation levels</li>
+<li>Apply balanced fertilizer as needed</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="stats-dashboard">
+<div class="stat-card">
+<div class="stat-icon">📊</div>
+<div class="stat-number" id="totalAnalyses">0</div>
+<div class="stat-label">Total Analyses</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">🦠</div>
+<div class="stat-number" id="diseasesFound">0</div>
+<div class="stat-label">Diseases Detected</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">📉</div>
+<div class="stat-number" id="avgYieldLoss">0%</div>
+<div class="stat-label">Avg. Yield Loss</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">🎯</div>
+<div class="stat-number">98.5%</div>
+<div class="stat-label">Detection Accuracy</div>
+<div class="progress-section">
+<div class="progress-title">Model Performance</div>
+<div class="progress-bar">
+<div class="progress-fill accuracy" style="width: 98.5%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="yield" style="display:none;">
+<h1 style="color:white;text-align:center;">Yield Analysis</h1>
+<div class="card">
+<h2>📊 Crop Yield Statistics</h2>
+<p>Projected yield improvement: <b>8.5%</b></p>
+<p>Last season yield: 3.5 tons/ha</p>
+<p>Current projection: 3.8 tons/ha</p>
+<button class="btn-primary" onclick="viewChart()">View Detailed Chart</button>
+</div>
+</div>
+<div class="section" id="reports" style="display:none;">
+<h1 style="color:white;text-align:center;">Reports</h1>
+<div class="card">
+<h2>📄 Saved Reports</h2>
+<p>No reports yet. Save your analysis results for tracking yield performance.</p>
+<button class="btn-primary" onclick="generateReport()">Generate Report</button>
+</div>
+</div>
+<div class="section" id="settings" style="display:none;">
+<h1 style="color:white;text-align:center;">Settings</h1>
+<div class="card">
+<h2>⚙️ Preferences</h2>
+<label><input checked="" type="checkbox"/> Enable Notifications</label><br/>
+<label><input type="checkbox"/> Dark Mode</label><br/><br/>
+<button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+</div>
+</div>
+</div>
+<script>
+        const cropDiseases = [
+            {
+                name: "Healthy Crop",
+                confidence: 96,
+                yieldLoss: 0,
+                severity: "low",
+                health: 98,
+                description: "Excellent crop health with no visible signs of disease. Strong leaf structure and optimal coloration indicate healthy growth conditions.",
+                recommendations: [
+                    "Continue current maintenance schedule",
+                    "Monitor for early signs of stress",
+                    "Maintain optimal irrigation levels",
+                    "Apply preventive treatments as scheduled"
+                ]
+            },
+            {
+                name: "Early Blight (Alternaria solani)",
+                confidence: 89,
+                yieldLoss: 18,
+                severity: "medium",
+                health: 75,
+                description: "Fungal disease causing characteristic dark spots with concentric rings. Early intervention can prevent significant yield loss.",
+                recommendations: [
+                    "Apply copper-based fungicide immediately",
+                    "Remove and destroy affected plant material",
+                    "Improve air circulation between plants",
+                    "Implement drip irrigation to reduce leaf wetness",
+                    "Schedule follow-up treatments every 7-10 days"
+                ]
+            },
+            {
+                name: "Late Blight (Phytophthora infestans)",
+                confidence: 94,
+                yieldLoss: 42,
+                severity: "high",
+                health: 45,
+                description: "Severe fungal disease that can rapidly destroy entire crops. Immediate action required to prevent total crop loss.",
+                recommendations: [
+                    "Apply systemic fungicide treatment urgently",
+                    "Remove severely infected plants immediately",
+                    "Increase plant spacing for better airflow",
+                    "Implement strict sanitation protocols",
+                    "Consider emergency harvest of unaffected areas"
+                ]
+            },
+            {
+                name: "Powdery Mildew",
+                confidence: 87,
+                yieldLoss: 25,
+                severity: "medium",
+                health: 68,
+                description: "White powdery fungal growth on leaves and stems. Reduces photosynthesis efficiency and overall plant vigor.",
+                recommendations: [
+                    "Apply sulfur-based or potassium bicarbonate treatment",
+                    "Improve air circulation around plants",
+                    "Reduce humidity levels in growing area",
+                    "Remove heavily infected foliage",
+                    "Monitor and treat weekly until controlled"
+                ]
+            },
+            {
+                name: "Bacterial Leaf Spot",
+                confidence: 91,
+                yieldLoss: 28,
+                severity: "medium",
+                health: 62,
+                description: "Bacterial infection causing water-soaked lesions that turn brown with yellow halos. Can spread rapidly in wet conditions.",
+                recommendations: [
+                    "Apply copper bactericide treatment",
+                    "Remove infected plant debris immediately",
+                    "Avoid overhead watering systems",
+                    "Disinfect tools between plant handling",
+                    "Implement crop rotation for next season"
+                ]
+            },
+            {
+                name: "Mosaic Virus Complex",
+                confidence: 93,
+                yieldLoss: 45,
+                severity: "high",
+                health: 40,
+                description: "Viral infection causing mottled yellow-green patterns on leaves. Severely impacts plant growth and fruit development.",
+                recommendations: [
+                    "Remove infected plants to prevent spread",
+                    "Control aphid and thrips populations",
+                    "Use virus-free planting material",
+                    "Implement strict sanitation measures",
+                    "Consider replanting with resistant varieties"
+                ]
+            },
+            {
+                name: "Septoria Leaf Spot",
+                confidence: 85,
+                yieldLoss: 22,
+                severity: "medium",
+                health: 70,
+                description: "Fungal disease causing small, circular spots with dark borders. Primarily affects lower leaves and can defoliate plants.",
+                recommendations: [
+                    "Apply preventive fungicide treatments",
+                    "Remove lower infected leaves",
+                    "Mulch around plants to prevent soil splash",
+                    "Ensure adequate plant spacing",
+                    "Rotate crops to break disease cycle"
+                ]
+            }
+        ];
+
+        let analysisStats = {
+            total: 0,
+            diseased: 0,
+            totalYieldLoss: 0
+        };
+
+        // DOM elements
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const loadingState = document.getElementById('loadingState');
+        const resultsContainer = document.getElementById('resultsContainer');
+
+        // Event listeners
+        uploadZone.addEventListener('click', () => fileInput.click());
+        uploadZone.addEventListener('dragover', handleDragOver);
+        uploadZone.addEventListener('drop', handleDrop);
+        uploadZone.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+        analyzeBtn.addEventListener('click', performAnalysis);
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        function processFile(file) {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    displayImagePreview(e.target.result);
+                    analyzeBtn.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function displayImagePreview(src) {
+            previewContainer.innerHTML = `
+                <img src="${src}" alt="Crop preview" class="preview-image">
+                <p style="margin-top: 15px; color: #4CAF50; font-weight: 600;">✓ Ready for instant analysis!</p>
+            `;
+        }
+
+        function performAnalysis() {
+            // Show loading state
+            loadingState.style.display = 'block';
+            resultsContainer.style.display = 'none';
+            analyzeBtn.disabled = true;
+
+            // Fast AI analysis simulation
+            setTimeout(() => {
+                const randomDisease = cropDiseases[Math.floor(Math.random() * cropDiseases.length)];
+                displayAnalysisResults(randomDisease);
+                updateStatistics(randomDisease);
+                
+                loadingState.style.display = 'none';
+                resultsContainer.style.display = 'block';
+                analyzeBtn.disabled = false;
+            }, 800);
+        }
+
+        function displayAnalysisResults(disease) {
+            // Update disease information
+            document.getElementById('diseaseName').textContent = disease.name;
+            document.getElementById('diseaseDescription').textContent = disease.description;
+            
+            // Update confidence
+            const confidenceFill = document.getElementById('confidenceFill');
+            const confidenceText = document.getElementById('confidenceText');
+            confidenceFill.style.width = disease.confidence + '%';
+            confidenceText.textContent = disease.confidence + '%';
+            
+            // Update severity indicator
+            const severityIndicator = document.getElementById('severityIndicator');
+            severityIndicator.className = `severity-indicator severity-${disease.severity}`;
+            severityIndicator.textContent = disease.severity === 'low' ? 'Low Risk' : 
+                                          disease.severity === 'medium' ? 'Medium Risk' : 'High Risk';
+            
+            // Update yield loss card
+            const yieldCard = document.getElementById('yieldCard');
+            const yieldPercentage = document.getElementById('yieldPercentage');
+            yieldPercentage.textContent = disease.yieldLoss + '%';
+            
+            yieldCard.className = 'yield-card';
+            if (disease.yieldLoss <= 10) {
+                yieldCard.classList.add('low');
+            } else if (disease.yieldLoss <= 30) {
+                yieldCard.classList.add('medium');
+            } else {
+                yieldCard.classList.add('high');
+            }
+            
+            // Update crop health
+            document.getElementById('cropHealth').textContent = disease.health + '%';
+            
+            // Update recommendations
+            const recommendationsList = document.getElementById('recommendationsList');
+            recommendationsList.innerHTML = '';
+            disease.recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                recommendationsList.appendChild(li);
+            });
+        }
+
+        function updateStatistics(disease) {
+            analysisStats.total++;
+            if (disease.yieldLoss > 0) {
+                analysisStats.diseased++;
+            }
+            analysisStats.totalYieldLoss += disease.yieldLoss;
+            
+            document.getElementById('totalAnalyses').textContent = analysisStats.total;
+            document.getElementById('diseasesFound').textContent = analysisStats.diseased;
+            
+            const avgLoss = analysisStats.total > 0 ? 
+                Math.round(analysisStats.totalYieldLoss / analysisStats.total) : 0;
+            document.getElementById('avgYieldLoss').textContent = avgLoss + '%';
+        }
+
+        // Initialize with sample data for demonstration
+        setTimeout(() => {
+            analysisStats = { total: 47, diseased: 12, totalYieldLoss: 284 };
+            updateStatistics({ yieldLoss: 0 });
+        }, 1000);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98f64fd543472e59',t:'MTc2MDYwNDY2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  document.getElementById(id).style.display = 'block';
+  event.target.classList.add('active');
+}
+</script>
+<!-- Modal Popup -->
+<div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000;">
+<div style="background:white; padding:30px; border-radius:15px; max-width:600px; width:90%; text-align:center;">
+<h2 id="modalTitle">Chart</h2>
+<canvas height="200" id="chartCanvas" style="display:none;" width="400"></canvas>
+<p id="modalMessage"></p>
+<button class="btn-primary" onclick="closeModal()">Close</button>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+function showModal(title, message, showChart=false) {
+  document.getElementById('modal').style.display = 'flex';
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalMessage').textContent = message;
+  const chart = document.getElementById('chartCanvas');
+  chart.style.display = showChart ? 'block' : 'none';
+  if(showChart) renderChart();
+}
+
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
+}
+
+function renderChart() {
+  const ctx = document.getElementById('chartCanvas').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Last Season', 'Projected'],
+      datasets: [{
+        label: 'Yield (tons/ha)',
+        data: [3.5, 3.8],
+        backgroundColor: ['#1e3c72', '#4CAF50']
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+function viewChart() {
+  showModal('Yield Details', 'Comparison of yield performance:', true);
+}
+
+async function generateReport() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  // Title section
+  doc.setFontSize(18);
+  doc.text("Crop Yield Analysis Report", 20, 20);
+
+  // Summary info
+  doc.setFontSize(12);
+  doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 35);
+  doc.text(`Total Analyses: ${document.getElementById('totalAnalyses').innerText}`, 20, 45);
+  doc.text(`Diseases Found: ${document.getElementById('diseasesFound').innerText}`, 20, 55);
+  doc.text(`Average Yield Loss: ${document.getElementById('avgYieldLoss').innerText}`, 20, 65);
+
+  // Disease details
+  doc.text("Recent Analysis Details:", 20, 80);
+  doc.text(`Disease: ${document.getElementById('diseaseName').innerText}`, 20, 90);
+  doc.text(`Confidence: ${document.getElementById('confidenceText').innerText}`, 20, 100);
+  doc.text(`Severity: ${document.getElementById('severityIndicator').innerText}`, 20, 110);
+  doc.text(`Expected Yield Loss: ${document.getElementById('yieldPercentage').innerText}`, 20, 120);
+  doc.text(`Crop Health: ${document.getElementById('cropHealth').innerText}`, 20, 130);
+
+  // Recommendations
+  doc.text("Recommendations:", 20, 145);
+  const recommendations = Array.from(document.querySelectorAll('#recommendationsList li')).map(li => li.innerText);
+  recommendations.forEach((rec, i) => {
+    doc.text(`• ${rec}`, 25, 155 + i * 10);
+  });
+
+  // Save PDF
+  doc.save("Crop_Yield_Report.pdf");
+
+  // Modal confirmation
+  showModal('Report Generated ✅', 'PDF report downloaded successfully!');
+}
+
+function saveSettings() {
+  showModal('Settings Saved', 'Your preferences have been updated successfully.');
+}
+</script>
+</body>
+</html>
